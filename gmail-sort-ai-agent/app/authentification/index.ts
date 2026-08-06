@@ -4,14 +4,14 @@ import {authenticate} from '@google-cloud/local-auth';
 import {google} from 'googleapis';
 
 // The scope for reading Gmail labels.
-const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
+const SCOPES: string[] = ['https://www.googleapis.com/auth/gmail.readonly'];
 // The path to the credentials file.
-const CREDENTIALS_PATH = path.join(process.cwd(), '../../credentials.json');
+const CREDENTIALS_PATH: string = path.join(process.cwd(), '../../credentials.json');
 
 /**
  * Lists the labels in the user's account.
  */
-async function listLabels() {
+async function listLabels(): Promise<void> {
   // Authenticate with Google and get an authorized client.
   const auth = await authenticate({
     scopes: SCOPES,
@@ -24,6 +24,7 @@ async function listLabels() {
   const result = await gmail.users.labels.list({
     userId: 'me',
   });
+
   const labels = result.data.labels;
   if (!labels || labels.length === 0) {
     console.log('No labels found.');
@@ -36,4 +37,4 @@ async function listLabels() {
   });
 }
 
-await listLabels();
+await listLabels()
