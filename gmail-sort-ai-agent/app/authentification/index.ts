@@ -6,7 +6,7 @@ import {google, gmail_v1} from 'googleapis';
 import type {OAuth2Client} from 'google-auth-library';
 
 // The scope for reading Gmail labels.
-const SCOPES: string[] = ['https://www.googleapis.com/auth/gmail.readonly'];
+const SCOPES: string[] = ['https://www.googleapis.com/auth/gmail.modify'];
 // The path to the credentials file.
 const CREDENTIALS_PATH: string = path.join(process.cwd(), '../../credentials.json');
 
