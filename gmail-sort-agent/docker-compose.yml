@@ -1,0 +1,7 @@
+services:
+  gmail-sorter:
+    build: .
+    volumes:
+      - ./credentials.json:/app/credentials.json:ro
+      - ./token.json:/app/token.json
+      - ./.env:/app/.env:ro
