@@ -1,6 +1,7 @@
 services:
   gmail-sorter:
     build: .
+    pull_policy: build
     volumes:
       - ./credentials.json:/app/credentials.json:ro
       - ./token.json:/app/token.json
