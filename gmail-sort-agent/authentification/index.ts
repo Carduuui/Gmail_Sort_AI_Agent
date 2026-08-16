@@ -8,9 +8,9 @@ import type { Auth } from 'googleapis';
 // The scope for reading/modifying Gmail labels.
 const SCOPES: string[] = ['https://www.googleapis.com/auth/gmail.modify'];
 // The path to the credentials file.
-const CREDENTIALS_PATH: string = path.join(process.cwd(), '../../gmail-sort-agent/credentials.json');
+const CREDENTIALS_PATH: string = path.join(process.cwd(), 'credentials.json');
 
-const TOKEN_PATH: string = path.join(process.cwd(), '../../gmail-sort-agent/token.json');
+const TOKEN_PATH: string = path.join(process.cwd(), 'token.json');
 
 export async function getAuth(): Promise<gmail_v1.Gmail> {
 
