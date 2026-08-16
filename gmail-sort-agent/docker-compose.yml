@@ -2,8 +2,18 @@ services:
   gmail-sorter:
     build: .
     pull_policy: build
-
+    labels:
+      ofelia.enabled: "true"
+      ofelia.job-run.gmail-sort.schedule: "0 0 3 * * *"
     volumes:
       - /opt/gmail-sort-agent/credentials.json:/app/credentials.json:ro
       - /opt/gmail-sort-agent/token.json:/app/token.json
       - /opt/gmail-sort-agent/.env:/app/.env:ro
+
+  scheduler:
+    image: mcuadros/ofelia:latest
+    depends_on:
+      - gmail-sorter
+    command: daemon --docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
