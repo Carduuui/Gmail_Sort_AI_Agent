@@ -10,8 +10,6 @@ services:
 
   scheduler:
     image: mcuadros/ofelia:latest
-    depends_on:
-      - gmail-sorter
     command: daemon --docker
     environment:
       - TZ=Europe/Berlin
