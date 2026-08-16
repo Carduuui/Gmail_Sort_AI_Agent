@@ -2,6 +2,7 @@ services:
   gmail-sorter:
     build: .
     pull_policy: build
+    profiles: ["build-only"]  # verhindert automatischen Start beim `docker compose up`
     volumes:
       - /opt/gmail-sort-agent/credentials.json:/app/credentials.json:ro
       - /opt/gmail-sort-agent/token.json:/app/token.json
@@ -15,8 +16,9 @@ services:
     environment:
       - TZ=Europe/Berlin
     labels:
-      ofelia.job-run.gmail-sort.schedule: "0 2,5 21 * * *"
+      ofelia.job-run.gmail-sort.schedule: "0 30 7 * * *"
       ofelia.job-run.gmail-sort.image: "gmail-sort-agent-gmail-sorter:latest"
+      ofelia.job-run.gmail-sort.delete: "true"
       ofelia.job-run.gmail-sort.volume: "/opt/gmail-sort-agent/credentials.json:/app/credentials.json:ro"
       ofelia.job-run.gmail-sort.volume2: "/opt/gmail-sort-agent/token.json:/app/token.json"
       ofelia.job-run.gmail-sort.volume3: "/opt/gmail-sort-agent/.env:/app/.env:ro"
