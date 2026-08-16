@@ -12,6 +12,8 @@ services:
     depends_on:
       - gmail-sorter
     command: daemon --docker
+    environment:
+    - TZ=Europe/Berlin
     labels:
       ofelia.job-run.gmail-sort.schedule: "0 43,45 20 * * *"
       ofelia.job-run.gmail-sort.image: "gmail-sort-agent-gmail-sorter:latest"
