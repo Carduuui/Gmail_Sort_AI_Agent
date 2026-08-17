@@ -2,9 +2,27 @@ import {generateText, stepCountIs, tool} from 'ai';
 import {anthropic} from "@ai-sdk/anthropic";
 import {z} from 'zod';
 import{getAuth} from "../authentification"
+import type { gmail_v1 } from 'googleapis';
 
-async function sortEmails(){
+async function checkNewMails(){
     const gmail = await getAuth();
+
+    const { data } = await gmail.users.messages.list({
+        userId: "me",
+        labelIds: ["INBOX"],
+        q: "newer_than:1d"
+    })
+
+    if(!data.messages || data.messages.length === 0){
+        console.log("Keine Nachrichten zu labenl!");
+        return;
+    }
+    else{
+        await sortEmails(gmail);
+    }
+}
+
+async function sortEmails(gmail: gmail_v1.Gmail){
     
     const result = await generateText({
         model: anthropic("claude-sonnet-4-6"),
@@ -114,4 +132,4 @@ async function sortEmails(){
     
 }
 
-await sortEmails();
+await checkNewMails();
