@@ -29,8 +29,11 @@ async function sortEmails(gmail: gmail_v1.Gmail){
         messages: [{
             role: "user",
             content: `Label alle E-Mails die heute reingekommen sind. 
-                    Sie dürfen maximal zwei Label bekommen.`,
+                    Sie dürfen maximal ein Label bekommen.`,
         }],
+        system: `Falls du bei einer Kategorie unsicher bist, nutze getLabeldExamples
+                , um zu sehen, wie ähnliche Mails in der Vergangenheit gelabelt wurden 
+                    und orientiere dich daran`,
         tools: {
             getLabels: tool({
                 description: "Gibt alle verfügbaren Labels aus.",
@@ -114,7 +117,7 @@ async function sortEmails(gmail: gmail_v1.Gmail){
                                 messageListVisibility: "show",
                             },
                         });
-                        console.log(`✓ Erfolgreich create`);
+                        console.log(`✓ Erfolgreich create: ${name}`);
                         return data;
                     }
                     catch(err){
@@ -122,6 +125,34 @@ async function sortEmails(gmail: gmail_v1.Gmail){
                         return { success: false, error: (err as Error).message };
                     }
                 } 
+            }),
+            getLabeledExamples: tool({
+                description: "Zeigt Beispiel-E-Mails, die breits mit einem bestimmten Label versehen wurden.",
+                inputSchema: z.object({
+                    labelId: z.string().describe("Die Label-ID, für die Beispiele gesucht werden")
+                }),
+                execute: async ({labelId}) =>{
+                    const {data} = await gmail.users.messages.list({
+                        userId: "me",
+                        labelIds: [labelId],
+                        maxResults: 3,
+                    })
+
+                    if(!data.messages) return [];
+
+                    const examples = await Promise.all(
+                        data.messages.map(async (msg) =>{
+                            const full = await gmail.users.messages.get({userId: "me", id: msg.id!});
+                            const headers = full.data.payload?.headers;
+                            return {
+                                subject: headers?.find(h => h.name === "Subject")?.value,
+                                from: headers?.find(h => h.name === "From")?.value,
+                                snippet: full.data.snippet,
+                            };
+                        })
+                    );
+                    return examples;
+                }
             })
         },
         stopWhen: stepCountIs(30)
