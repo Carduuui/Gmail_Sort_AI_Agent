@@ -14,7 +14,7 @@ services:
     environment:
       - TZ=Europe/Berlin
     labels:
-      ofelia.job-run.gmail-sort.schedule: "0 30 7 * * *"
+      ofelia.job-run.gmail-sort.schedule: "0 40,43 15 * * *"
       ofelia.job-run.gmail-sort.image: "gmail-sort-agent-gmail-sorter:latest"
       ofelia.job-run.gmail-sort.delete: "true"
       ofelia.job-run.gmail-sort.volume: "/opt/gmail-sort-agent/credentials.json:/app/credentials.json:ro"
