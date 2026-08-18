@@ -31,7 +31,7 @@ async function sortEmails(gmail: gmail_v1.Gmail){
             content: `Label alle E-Mails die heute reingekommen sind. 
                     Sie dürfen maximal ein Label bekommen.`,
         }],
-        system: `Falls du bei einer Kategorie unsicher bist, nutze getLabeldExamples
+        system: `Falls du bei einer Kategorie unsicher bist, nutze getLabeledExamples
                 , um zu sehen, wie ähnliche Mails in der Vergangenheit gelabelt wurden 
                     und orientiere dich daran`,
         tools: {
@@ -85,7 +85,7 @@ async function sortEmails(gmail: gmail_v1.Gmail){
                 description: "Damit können Labels gesetzt werden",
                 inputSchema: z.object({
                             messageId: z.string().describe("Die ID der E-Mail"),
-                            labelIds: z.array(z.string()).max(2).describe("Die IDs der Labels, die gesetzt werden sollen"),
+                            labelIds: z.array(z.string()).length(1).describe("Die ID des Labels, welches gesetzt werden soll"),
                 }),
                 execute: async ({messageId,labelIds}) =>{
                     try {
@@ -158,7 +158,7 @@ async function sortEmails(gmail: gmail_v1.Gmail){
         stopWhen: stepCountIs(30)
     });
 
-        return Response.json({text: result.text});
+        return result.text;
 
     
 }
