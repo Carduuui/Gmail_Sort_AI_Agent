@@ -1,8 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { MyBtnTestComponent } from './components/BtnTest/BtnTest';
+
 
 @Component({
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, MyBtnTestComponent],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
